@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Front-end</title>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=IDshm3h8M7ghuj0PKvPTt47P2fW3qRelOdNoePQ9mnS2G0cRXAfGGySfbpiAVhltQz0Gt8pvPjBrFIJUhOtJq7kU-Hse8aMGGd2lmaAiDRnjSvKL02osaYGV8-eyHCJrTHn3ZuQSs3Nv3dqBlmJNvvZoqJHnszIeokYKhNHEBU0H6imubOs3cdtPFLgI-R0tD_RgvkNQz_J9kzilsl8ayOZk8hA2Z0YZZff8qXrKasMTF689iVnarkMGt2UCWu0W8MlN5EN-8XD5EUy1IulheGGbk1FiZ5p0Kipqt3pM1VEOzVen2zTp-39_1E_LGJRfgAYPSm_ZfA_SV-eA8kfzOo3_93bVV2akyVOuPT7det6LYOIkqoUTTaG47Dw-QO1zC8hx1WzUwdi0qcO9ME7e4mFZFSUYedfbmx99SauZuYRVQc76RSJIGTgwFmxlxYvE-XFwn7zjpTP1eSQZ_sYX6vBrn2RvcbEcxDiwpMtwc1XknOFUabJ9jgosheqM8-NFombgPOPqi5bw-1aQKGzuRWMMpPb1sRwhhmpRv0pKIrJfJSyb05p2acIuDgNrrLyehj1paQKBmf8YeedJ9VcMiKuia_ZkY_vDrqLxMZcMxVsGz6sbeRxcODNkcLHn-X110UCd7eH2yOJ1O5iywyz8PZPowLfZvjenA_1ytp52ijOc0pR54TGO9NZzMZEvcjsMnrd_vkitFYKrRrZzUVtD9Niq16-h7DX4P5Nma9JmRs-dWc-7K0F8sXrUXTSHvwjbkT5J4v32VKkJ10Y5mGaJEbGoZYr6I4h2Z7kvUgHWucCGMNdbCHTn9sABg8H7FnYcFxtUiKNdXQKM4FBYWglQYjA-XpNWhm919LET84x82AAXHL9lmV-LNkosqVQaVJRAjEHg0oJduVu9oWln1TxGovg_lwiZLZzBuOoXTzdoWp6Oczei-dsV7A1PznuZl-Ed8Hv1FMFWbYgf2NBhGmhp-IafLKTu5K5hljeOTbPTTE22fvffaHDrHi3yaXOFO7SZbsRkCU77AN9EcNFt9Qi90zk5-oN8748_e_qlwBrmYEDO1DMBpH9Ay8GsEKv06eJ-tbWTKJvBgAYsINL93WUJmKAxwsY2SxYJOmNrn2hSMnOZVXwh2rOfmBMIe3v9Rs71l-pYKZuhHAZgDnhw4Vhd4cOcprXd0TQMYW0fMir4VWOiuf6jaz3pntohopjgpJkmMeoHkA791wQ1wdpWNQTgC1lKG50-nmHw4iTy4a8sX3vhPCaCzgxE-hZsGWstlzH0d-aJsijUE5o-lVoxua-ffJhl9TBmr81DRpwnQGAAHNxhDtkYHtyyZQ-2olEso60C86JiYS5DFz-69YczjqKxR-WLzPWC0HxtTr2Lzjz0YeNBatzMF9ZwUDMRpNP2_DRIJIJCw2cvr7yJ0kjbCI5wr7YPe4AHnaBO7bsf4TjAozcm7M2s_I7XO79_eb9TtNb_" charset="UTF-8"></script></head>
+<body>
+<h1>Front-end</h1>
+
+
+<button id="create_video">create</button>
+<input id="create_title" placeholder="новое название"/>
+<hr>
+<button id="read_all_videos">read all vieos</button>
+<hr>
+<button id="read_single_video">read video by id</button>
+<input id="read_id" placeholder="videoId"/>
+<hr>
+<button id="update_video">update</button>
+<input id="update_id" placeholder="videoId"/><input id="update_title" placeholder="новое название"/>
+<hr>
+<button id="delete_video">delete</button>
+<input id="delete_id" placeholder="videoId"/>
+<hr>
+
+
+<div id="result"></div>
+
+<script>
+    read_all_videos.onclick = () => {
+        fetch('http://localhost:3003/videos')
+            .then(res => res.json())
+            .then(data => result.innerHTML = JSON.stringify(data))
+    }
+    read_single_video.onclick = () => {
+        fetch('http://localhost:3003/videos/' + read_id.value)
+            .then(res => res.json())
+            .then(data => result.innerHTML = JSON.stringify(data))
+    }
+    create_video.onclick = () => {
+        fetch('http://localhost:3003/videos', {
+            method: 'POST',
+            body: JSON.stringify({title: create_title.value}),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(res => res.json())
+            .then(data => result.innerHTML = JSON.stringify(data))
+    }
+    delete_video.onclick = () => {
+        fetch('http://localhost:3003/videos/' + delete_id.value, {method: 'DELETE'})
+    }
+    update_video.onclick = () => {
+        fetch('http://localhost:3003/videos/' + update_id.value, {
+            method: 'PUT',
+            body: JSON.stringify({title: update_title.value}),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(res => res.json())
+            .then(data => result.innerHTML = JSON.stringify(data))
+    }
+</script>
+</body>
+</html>

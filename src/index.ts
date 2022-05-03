@@ -19,6 +19,13 @@ let videos: VideoRecordType[] = [
     {id: 5, title: 'About JS - 05', author: 'it-incubator.eu'},
 ]
 
+const errorCollect = (errors: FieldErrorType[], field: string, message: string) => {
+    const error: FieldErrorType = {
+        field: field,
+        message: message
+    }
+    errors.push(error)
+}
 // make get-request on rood dir '/'
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello, Lenkjlkko')
@@ -32,18 +39,16 @@ app.post('/lesson_01/api/videos', (req: Request, res: Response) => {
     // create array with type FieldErrorType
     const errors: FieldErrorType[] = []
     if (!req.body.title) {
-        const error: FieldErrorType = {
+        errorCollect(errors, "title", "Type error: field is empty")
+/*        const error: FieldErrorType = {
             field: "title",
             message: "Type error: field is empty"
         }
-        errors.push(error)
+        errors.push(error)*/
     }
+
     if (req.body.title.length > 40) {
-        const error: FieldErrorType = {
-            field: "title",
-            message: "Title should be less than 40 symbols"
-        }
-        errors.push(error)
+        errorCollect(errors, "title", "Title should be less than 40 symbols")
     }
     // if title is not a string
     if (typeof req.body.title !== "string") {
@@ -228,3 +233,4 @@ type ProblemDetailsType = {
     detail: string
     instance: string
 }
+
