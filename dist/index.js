@@ -19,14 +19,29 @@ let videos = [
     { id: 4, title: 'About JS - 04', author: 'it-incubator.eu' },
     { id: 5, title: 'About JS - 05', author: 'it-incubator.eu' },
 ];
-const errorCollect = (errors, field, message) => {
+/*const errorsCollect = (errors: FieldErrorType[], field: string, message: string, variableCheckIsOutOfScope: string) => {
+    const variableCheckIsOutOfScope
+    const error: FieldErrorType = {
+        field: field,
+        message: message
+    }
+    errors.push(error)
+}*/
+const errorsCollect = (errors, field, message) => {
     const error = {
         field: field,
         message: message
     };
     errors.push(error);
 };
-// make get-request on rood dir '/'
+const response = (res, errorMessages, resultCode) => {
+    const responseObj = {
+        errorMessages: errorMessages,
+        resultCode: resultCode
+    };
+    res.status(resultCode).send(responseObj);
+};
+// make get-request on root dir '/'
 app.get('/', (req, res) => {
     res.send('Hello, Lenkjlkko');
 });
@@ -36,45 +51,57 @@ app.get('/lesson_01/api/videos', (req, res) => {
 app.post('/lesson_01/api/videos', (req, res) => {
     // create array with type FieldErrorType
     const errors = [];
-    if (!req.body.title) {
-        errorCollect(errors, "title", "Type error: field is empty");
-        /*        const error: FieldErrorType = {
-                    field: "title",
-                    message: "Type error: field is empty"
-                }
-                errors.push(error)*/
-    }
-    if (req.body.title.length > 40) {
-        errorCollect(errors, "title", "Title should be less than 40 symbols");
-    }
-    // if title is not a string
+    // ---------------------- Проверка тайтла -----------------------------------------------
     if (typeof req.body.title !== "string") {
-        // create Error Object
-        const error = {
-            field: "title",
-            message: "Type error: field is not string"
-        };
-        //push this error to array with errors
-        errors.push(error);
+        errorsCollect(errors, "title", "Error Type: Field is not string");
     }
+    else {
+        // если тайтл пустой + когда трим - если пустой и несколько пробелов, сжирает пробелы
+        if (!req.body.title.trim()) {
+            errorsCollect(errors, "title", "Error Type: Field is empty");
+            /*        const error: FieldErrorType = {
+                        field: "title",
+                        message: "Type error: field is empty"
+                    }
+                    errors.push(error)*/
+        }
+        if (req.body.title.length > 40) {
+            errorsCollect(errors, "title", "Error Type: Title should be less than 40 symbols");
+        }
+    }
+    // ---------------------- Проверка автора --------------------------------------------------
     // the same for author
     if (typeof req.body.author !== "string") {
-        const error = {
-            field: "author",
-            message: "Type error: field is not string"
-        };
-        errors.push(error);
+        errorsCollect(errors, "author", "Error Type: Field is not string");
     }
+    else {
+        if (!req.body.author.trim()) {
+            errorsCollect(errors, "author", "Error Type: Field is empty");
+            /*        const error: FieldErrorType = {
+                        field: "title",
+                        message: "Type error: field is empty"
+                    }
+                    errors.push(error)*/
+        }
+        if (req.body.author.length > 40) {
+            errorsCollect(errors, "author", "Error Type: Author should be less than 40 symbols");
+        }
+    }
+    // ---------------------- Если есть ошибки, выдаем массив с ошибками -------------------------
     // if array is more than 0
     if (errors.length !== 0) {
-        // create response object with special fields/attributes
-        const responseObj = {
-            data: {},
-            errorMessages: errors,
-            resultCode: 400
-        };
-        res.status(400).send(responseObj);
-        //return
+        response(res, errors, 400);
+        /*
+        create response object with special fields/attributes
+        const responseObj: APIResultType = {
+                    data: {},
+                    errorMessages: errors,
+                    resultCode: 400
+                }
+
+                res.status(400).send(responseObj)
+                */
+        // ----------------------- Прошли все проверки -------------------------------------------------
     }
     else {
         // create video object with special fields/attributes
@@ -90,27 +117,22 @@ app.post('/lesson_01/api/videos', (req, res) => {
     }
 });
 app.get('/lesson_01/api/videos/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const video = videos.find(f => f.id === id);
     const errors = [];
     if (!req.params.id) {
-        //if ('/lesson_01/api/videos/'){
-        const error = {
-            field: "title",
-            message: "Type error: you should specify the id"
-        };
-        errors.push(error);
+        errorsCollect(errors, "id", "Error Type: You should specify the id");
     }
-    if (errors.length !== 0) {
-        // create response object with special fields/attributes
-        const responseObj = {
-            data: {},
-            errorMessages: errors,
-            resultCode: 400
-        };
-        res.status(400).send(responseObj);
+    if (!video) {
+        res.send(404);
     }
-    else {
-        const id = +req.params.id;
-        const video = videos.find(v => v.id === id);
+    /* Кажется, так было бы правильней, но чтобы соответствовать сваггеру, сделала так :)
+        if (!video) {
+            errorsCollect(errors, "id", "Error Type: Given Id is out of id range")
+        }
+        if (errors.length !== 0) {
+            response (res, errors, 404)
+        }*/ else {
         res.status(200);
         res.send(video);
     }
@@ -118,68 +140,51 @@ app.get('/lesson_01/api/videos/:id', (req, res) => {
 app.put('/lesson_01/api/videos/:id', (req, res) => {
     // create array with type FieldErrorType
     const errors = [];
-    const id = +req.params.id;
+    const id = parseInt(req.params.id);
     const video = videos.find(v => v.id === id);
-    if (!req.body.title) {
-        const error = {
-            field: "title",
-            message: "Type error: field is empty"
-        };
-        errors.push(error);
-    }
-    if (req.body.title.length > 40) {
-        const error = {
-            field: "title",
-            message: "Title should be less than 40 symbols"
-        };
-        errors.push(error);
+    if (!id) {
+        errorsCollect(errors, "id", "Error Type: id is empty");
     }
     if (typeof req.body.title !== "string") {
-        // create Error Object
-        const error = {
-            field: "title",
-            message: "Type error: title is not string"
-        };
-        //push this error to array with errors
-        errors.push(error);
-    }
-    if (errors.length !== 0) {
-        // create response object with special fields/attributes
-        const responseObj = {
-            data: {},
-            errorMessages: errors,
-            resultCode: 400
-        };
-        res.status(400).send(responseObj);
-        //return
-    }
-    if (!video) {
-        const problemDetails = {
-            type: "Problem Type",
-            title: "There is no video with such Id in the array",
-            status: 404,
-            detail: "Put another video with the right id",
-            instance: "some instance"
-        };
-        res.send(problemDetails);
+        errorsCollect(errors, "title", "Error Type: title is not string");
     }
     else {
-        video.title = req.body.title;
+        if (!req.body.title.trim()) {
+            errorsCollect(errors, "title", "Error Type: field is empty");
+        }
+        if (req.body.title.length > 40) {
+            errorsCollect(errors, "title", "Error Type: title should be less than 40 symbols");
+        }
+    }
+    if (errors.length !== 0) {
+        response(res, errors, 400);
+    }
+    if (!video) {
+        res.send(404);
+    }
+    else {
+        const body = req.body;
+        video.title = body.title;
         res.send(204);
     }
 });
 app.delete('/lesson_01/api/videos/:id', (req, res) => {
+    const errors = [];
     const id = +req.params.id;
     const video = videos.find(v => v.id === id);
+    if (!id) {
+        errorsCollect(errors, "id", "Type Error: You should specify the Id");
+    }
     if (!video) {
-        const problemDetail = {
+        res.send(404);
+        /*const problemDetail: ProblemDetailsType = {
             type: "Problem Type",
             title: "There is no video with such Id in the array",
             status: 404,
             detail: "Put another video with the right id",
             instance: "some instance"
-        };
-        res.send(problemDetail);
+        }
+        res.send(problemDetail)*/
     }
     else {
         videos = videos.filter(v => v.id !== id);
@@ -198,4 +203,11 @@ function getLastId(db) {
     });
     return lastIndex;
 }
+/*type ProblemDetailsType = {
+    type: string
+    title: string
+    status: number
+    detail: string
+    instance: string
+}*/
 //# sourceMappingURL=index.js.map

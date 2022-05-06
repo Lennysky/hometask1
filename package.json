@@ -6,8 +6,8 @@
   "author": "Lennysky <ekhinelly@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --inspect dist/index.js",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "dev": "nodemon --inspect dist/index.js"
   },
   "dependencies": {
     "body-parser": "^1.20.0",
