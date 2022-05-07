@@ -185,6 +185,7 @@ app.delete('/lesson_01/api/videos/:id', (req: Request, res: Response) => {
     const video = videos.find(v => v.id === id)
     if (!id) {
         errorsCollect(errors, "id", "Type Error: You should specify the Id")
+        response (res, errors, 400)
     }
     if (!video) {
         res.send(404)
