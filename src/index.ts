@@ -52,7 +52,7 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.get('/lesson_01/api/videos', (req: Request, res: Response) => {
-    res.send(videos)
+    res.status(200).send(videos)
 })
 
 app.post('/lesson_01/api/videos', (req: Request, res: Response) => {
@@ -175,7 +175,7 @@ app.put('/lesson_01/api/videos/:id', (req: Request, res: Response) => {
     } else {
         const body: CreateUpdateVideoInputModel = req.body
         video.title = body.title;
-        res.send(204)
+        res.status(204)
     }
 })
 

@@ -8,7 +8,7 @@ const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
 // create express app
 const app = (0, express_1.default)();
-const port = 3003;
+const port = process.env.PORT || 3003;
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());
@@ -46,7 +46,7 @@ app.get('/', (req, res) => {
     res.send('Hello, Lenkjlkko');
 });
 app.get('/lesson_01/api/videos', (req, res) => {
-    res.send(videos);
+    res.status(200).send(videos);
 });
 app.post('/lesson_01/api/videos', (req, res) => {
     // create array with type FieldErrorType
@@ -165,7 +165,7 @@ app.put('/lesson_01/api/videos/:id', (req, res) => {
     else {
         const body = req.body;
         video.title = body.title;
-        res.send(204);
+        res.status(204);
     }
 });
 app.delete('/lesson_01/api/videos/:id', (req, res) => {
@@ -174,6 +174,7 @@ app.delete('/lesson_01/api/videos/:id', (req, res) => {
     const video = videos.find(v => v.id === id);
     if (!id) {
         errorsCollect(errors, "id", "Type Error: You should specify the Id");
+        response(res, errors, 400);
     }
     if (!video) {
         res.send(404);
