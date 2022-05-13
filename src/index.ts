@@ -38,9 +38,9 @@ const errorsCollect = (errors: FieldErrorType[], field: string, message: string)
 }
 
 
-const response = (res: Response, errorMessages: FieldErrorType[], resultCode: number) => {
+const response = (res: Response, errorsMessages: FieldErrorType[], resultCode: number) => {
     const responseObj: APIResultType = {
-        errorMessages: errorMessages,
+        errorsMessages: errorsMessages,
         resultCode: resultCode
     }
     res.status(resultCode).send(responseObj)
@@ -100,7 +100,7 @@ app.post('/videos', (req: Request, res: Response) => {
 
     // if array is more than 0
     if (errors.length !== 0) {
-        response(res, errors, 400)
+        response(res, errors, 1)
         /*
         create response object with special fields/attributes
         const responseObj: APIResultType = {
@@ -127,7 +127,7 @@ app.post('/videos', (req: Request, res: Response) => {
     }
 })
 
-app.get('videos/:id', (req: Request, res: Response) => {
+app.get('/videos/:id', (req: Request, res: Response) => {
     const id = parseInt(req.params.id)
     const video = videos.find(f => f.id === id)
     const errors: FieldErrorType[] = []
@@ -168,7 +168,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
         }
     }
     if (errors.length !== 0) {
-        response(res, errors, 400)
+        response(res, errors, 1)
     }
     if (!video) {
         res.send(404)
@@ -230,7 +230,7 @@ type FieldErrorType = {
 }
 
 type APIResultType = {
-    errorMessages: FieldErrorType[]
+    errorsMessages: FieldErrorType[]
     resultCode: number
 }
 

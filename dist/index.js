@@ -34,9 +34,9 @@ const errorsCollect = (errors, field, message) => {
     };
     errors.push(error);
 };
-const response = (res, errorMessages, resultCode) => {
+const response = (res, errorsMessages, resultCode) => {
     const responseObj = {
-        errorMessages: errorMessages,
+        errorsMessages: errorsMessages,
         resultCode: resultCode
     };
     res.status(resultCode).send(responseObj);
@@ -89,7 +89,7 @@ app.post('/videos', (req, res) => {
     // ---------------------- Если есть ошибки, выдаем массив с ошибками -------------------------
     // if array is more than 0
     if (errors.length !== 0) {
-        response(res, errors, 400);
+        response(res, errors, 1);
         /*
         create response object with special fields/attributes
         const responseObj: APIResultType = {
@@ -115,7 +115,7 @@ app.post('/videos', (req, res) => {
         res.send(video);
     }
 });
-app.get('videos/:id', (req, res) => {
+app.get('/videos/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const video = videos.find(f => f.id === id);
     const errors = [];
@@ -156,7 +156,7 @@ app.put('/videos/:id', (req, res) => {
         }
     }
     if (errors.length !== 0) {
-        response(res, errors, 400);
+        response(res, errors, 1);
     }
     if (!video) {
         res.send(404);
