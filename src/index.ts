@@ -127,7 +127,7 @@ app.post('/videos', (req: Request, res: Response) => {
     }
 })
 
-app.get('/lesson_01/api/videos/:id', (req: Request, res: Response) => {
+app.get('videos/:id', (req: Request, res: Response) => {
     const id = parseInt(req.params.id)
     const video = videos.find(f => f.id === id)
     const errors: FieldErrorType[] = []
@@ -149,7 +149,7 @@ app.get('/lesson_01/api/videos/:id', (req: Request, res: Response) => {
     }
 })
 
-app.put('/lesson_01/api/videos/:id', (req: Request, res: Response) => {
+app.put('/videos/:id', (req: Request, res: Response) => {
     // create array with type FieldErrorType
     const errors: FieldErrorType[] = []
     const id = parseInt(req.params.id);
@@ -179,7 +179,7 @@ app.put('/lesson_01/api/videos/:id', (req: Request, res: Response) => {
     }
 })
 
-app.delete('/lesson_01/api/videos/:id', (req: Request, res: Response) => {
+app.delete('/videos/:id', (req: Request, res: Response) => {
     const errors: FieldErrorType[] = []
     const id = +req.params.id;
     const video = videos.find(v => v.id === id)

@@ -115,7 +115,7 @@ app.post('/videos', (req, res) => {
         res.send(video);
     }
 });
-app.get('/lesson_01/api/videos/:id', (req, res) => {
+app.get('videos/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const video = videos.find(f => f.id === id);
     const errors = [];
@@ -136,7 +136,7 @@ app.get('/lesson_01/api/videos/:id', (req, res) => {
         res.send(video);
     }
 });
-app.put('/lesson_01/api/videos/:id', (req, res) => {
+app.put('/videos/:id', (req, res) => {
     // create array with type FieldErrorType
     const errors = [];
     const id = parseInt(req.params.id);
@@ -167,7 +167,7 @@ app.put('/lesson_01/api/videos/:id', (req, res) => {
         res.status(204);
     }
 });
-app.delete('/lesson_01/api/videos/:id', (req, res) => {
+app.delete('/videos/:id', (req, res) => {
     const errors = [];
     const id = +req.params.id;
     const video = videos.find(v => v.id === id);
