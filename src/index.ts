@@ -51,11 +51,11 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello, Lenkjlkko')
 })
 
-app.get('/lesson_01/api/videos', (req: Request, res: Response) => {
+app.get('/videos', (req: Request, res: Response) => {
     res.status(200).send(videos)
 })
 
-app.post('/lesson_01/api/videos', (req: Request, res: Response) => {
+app.post('/videos', (req: Request, res: Response) => {
     // create array with type FieldErrorType
     const errors: FieldErrorType[] = []
 // ---------------------- Проверка тайтла -----------------------------------------------

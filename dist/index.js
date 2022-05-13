@@ -45,10 +45,10 @@ const response = (res, errorMessages, resultCode) => {
 app.get('/', (req, res) => {
     res.send('Hello, Lenkjlkko');
 });
-app.get('/lesson_01/api/videos', (req, res) => {
+app.get('/videos', (req, res) => {
     res.status(200).send(videos);
 });
-app.post('/lesson_01/api/videos', (req, res) => {
+app.post('/videos', (req, res) => {
     // create array with type FieldErrorType
     const errors = [];
     // ---------------------- Проверка тайтла -----------------------------------------------
