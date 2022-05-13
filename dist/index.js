@@ -39,7 +39,7 @@ const response = (res, errorsMessages, resultCode) => {
         errorsMessages: errorsMessages,
         resultCode: resultCode
     };
-    res.status(resultCode).send(responseObj);
+    res.status(400).send(responseObj);
 };
 // make get-request on root dir '/'
 app.get('/', (req, res) => {
@@ -53,6 +53,7 @@ app.post('/videos', (req, res) => {
     const errors = [];
     // ---------------------- Проверка тайтла -----------------------------------------------
     if (typeof req.body.title !== "string") {
+        console.log(req.body)
         errorsCollect(errors, "title", "Error Type: Field is not string");
     }
     else {
@@ -89,6 +90,7 @@ app.post('/videos', (req, res) => {
     // ---------------------- Если есть ошибки, выдаем массив с ошибками -------------------------
     // if array is more than 0
     if (errors.length !== 0) {
+        console.log(errors)
         response(res, errors, 1);
         /*
         create response object with special fields/attributes
