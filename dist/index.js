@@ -70,23 +70,22 @@ app.post('/lesson_01/api/videos', (req, res) => {
         }
     }
     // ---------------------- Проверка автора --------------------------------------------------
-    // the same for author
-    if (typeof req.body.author !== "string") {
-        errorsCollect(errors, "author", "Error Type: Field is not string");
-    }
-    else {
-        if (!req.body.author.trim()) {
-            errorsCollect(errors, "author", "Error Type: Field is empty");
-            /*        const error: FieldErrorType = {
-                        field: "title",
-                        message: "Type error: field is empty"
-                    }
-                    errors.push(error)*/
-        }
-        if (req.body.author.length > 40) {
-            errorsCollect(errors, "author", "Error Type: Author should be less than 40 symbols");
-        }
-    }
+    /*    // the same for author
+        if (typeof req.body.author !== "string") {
+            errorsCollect(errors, "author", "Error Type: Field is not string")
+        } else {
+            if (!req.body.author.trim()) {
+                errorsCollect(errors, "author", "Error Type: Field is empty")
+                /!*        const error: FieldErrorType = {
+                            field: "title",
+                            message: "Type error: field is empty"
+                        }
+                        errors.push(error)*!/
+            }
+            if (req.body.author.length > 40) {
+                errorsCollect(errors, "author", "Error Type: Author should be less than 40 symbols")
+            }
+        }*/
     // ---------------------- Если есть ошибки, выдаем массив с ошибками -------------------------
     // if array is more than 0
     if (errors.length !== 0) {
