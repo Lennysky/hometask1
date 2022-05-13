@@ -118,7 +118,7 @@ app.post('/videos', (req: Request, res: Response) => {
         const video: VideoRecordType = {
             id: getLastId(videos) + 1,
             title: req.body.title,
-            author: req.body.author
+            author: "it-incubator.eu"
         }
         // push this video to the array with videos
         videos.push(video)
