@@ -41,6 +41,7 @@ const response = (res, errorsMessages, resultCode) => {
     };
     res.status(400).send(responseObj);
 };
+
 // make get-request on root dir '/'
 app.get('/', (req, res) => {
     res.send('Hello, Lenkjlkko');
