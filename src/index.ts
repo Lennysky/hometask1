@@ -43,7 +43,7 @@ const response = (res: Response, errorsMessages: FieldErrorType[], resultCode: n
         errorsMessages: errorsMessages,
         resultCode: resultCode
     }
-    res.status(resultCode).send(responseObj)
+    res.status(400).send(responseObj)
 }
 
 // make get-request on root dir '/'
