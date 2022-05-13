@@ -164,7 +164,7 @@ app.put('/videos/:id', (req, res) => {
     else {
         const body = req.body;
         video.title = body.title;
-        res.status(204);
+        res.status(204).send();
     }
 });
 app.delete('/videos/:id', (req, res) => {

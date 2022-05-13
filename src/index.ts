@@ -175,7 +175,8 @@ app.put('/videos/:id', (req: Request, res: Response) => {
     } else {
         const body: CreateUpdateVideoInputModel = req.body
         video.title = body.title;
-        res.status(204)
+        res.status(204).send()
+
     }
 })
 
